@@ -3,498 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مهام يوسف اليومية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <title>مدير المهام والملاحظات المزامن</title>
     <style>
         :root {
-            --bg-color: #0b132b;
-            --card-bg: #1c2541;
-            --card-border: #3a506b;
-            --text-main: #edf2f4;
-            --text-muted: #8d99ae;
-            --accent: #48cae4;
-            --accent-hover: #00b4d8;
-            --success: #5bc0be;
-            --danger: #e63946;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-color: #1f2937;
+            --border-color: #e5e7eb;
+            --danger-color: #ef4444;
         }
 
         body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 24px 16px;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
         }
 
         .container {
             width: 100%;
-            max-width: 850px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .date-badge {
+            max-width: 600px;
             background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            color: var(--accent);
-            display: inline-block;
-            font-weight: 500;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
             padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--accent);
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 12px;
-        }
-
-        .tasks-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .task-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(11, 19, 43, 0.5);
-            border: 1px solid var(--card-border);
-            padding: 14px 18px;
             border-radius: 12px;
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        .task-item:hover {
-            border-color: var(--accent);
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: #111827;
         }
 
-        .task-label {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            font-size: 1.05rem;
-            flex: 1;
-            user-select: none;
+        .sync-box {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
         }
 
-        input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--accent);
-            cursor: pointer;
+        .sync-box input {
+            width: calc(100% - 100px);
+            padding: 8px;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
         }
 
-        .completed span {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        .subjects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 16px;
-        }
-
-        .subject-card {
-            background: rgba(11, 19, 43, 0.5);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .subject-header {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .subject-inputs {
-            display: flex;
-            gap: 16px;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            justify-content: space-between;
+        .sync-box button {
+            width: 90px;
+            padding: 8px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
         .input-group {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--card-bg);
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .input-group input {
-            width: 55px;
-            background: var(--bg-color);
-            border: 1px solid var(--card-border);
-            color: #ffffff;
-            padding: 4px 8px;
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
-            text-align: center;
-            font-size: 0.95rem;
-            font-weight: 700;
-            outline: none;
+            font-size: 1rem;
         }
 
-        .input-group input:focus {
-            border-color: var(--accent);
+        .btn-add {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
 
-        .progress-container {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        .btn-add:hover {
+            background-color: var(--primary-hover);
         }
 
-        .progress-bar-bg {
-            background: var(--bg-color);
-            border-radius: 10px;
-            height: 14px;
-            width: 100%;
-            overflow: hidden;
-            margin-top: 12px;
-            border: 1px solid var(--card-border);
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .progress-bar-fill {
-            background: linear-gradient(90deg, var(--accent), var(--success));
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: #fff;
+        }
+
+        li.completed span {
+            text-decoration: line-through;
+            color: #9ca3af;
         }
 
         .actions {
             display: flex;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 8px;
         }
 
-        button {
-            flex: 1;
-            background-color: var(--accent);
-            color: #0b132b;
+        .btn-delete {
+            background: none;
             border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.05rem;
+            color: var(--danger-color);
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        button:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--card-border);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-color: var(--text-muted);
-        }
-
-        .history-item {
-            background: rgba(11, 19, 43, 0.5);
-            border: 1px solid var(--card-border);
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95rem;
-        }
-
-        .alert-box {
-            background: rgba(230, 57, 70, 0.15);
-            border: 1px solid rgba(230, 57, 70, 0.4);
-            border-radius: 14px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            color: #ffb703;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 600px) {
-            .subjects-grid {
-                grid-template-columns: 1fr;
-            }
-            .subject-inputs {
-                flex-direction: column;
-                gap: 8px;
-            }
-            .actions {
-                flex-direction: column;
-            }
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>مهام يوسف اليومية</h1>
-        <div class="date-badge" id="currentDate">2026</div>
-    </header>
+    <h1>ملاحظاتي والمهام</h1>
 
-    <!-- تنبيه النواقص من اليوم السابق -->
-    <div id="alertBox" class="alert-box" style="display: none;">
-        <strong>⚠️ تنبيه نواقص الأمس:</strong> <span id="alertText"></span>
-        <button onclick="carryOverTasks()" style="margin-top:12px; padding:8px 14px; font-size:0.85rem;" class="btn-secondary">ترحيل النواقص لليوم</button>
-    </div>
-
-    <!-- مؤشر التقدم الإجمالي -->
-    <div class="progress-container">
-        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem;">
-            <span>نسبة الإنجاز اليومي</span>
-            <span id="progressText" style="color: var(--accent);">0%</span>
+    <div class="sync-box">
+        <label for="user-key"><strong>رمز المزامنة بين الأجهزة:</strong></label><br>
+        <div style="display:flex; gap: 8px; margin-top: 6px;">
+            <input type="text" id="user-key" placeholder="أدخل رمز المزامنة الخاص بك">
+            <button onclick="saveKey()">حفظ الرمز</button>
         </div>
-        <div class="progress-bar-bg">
-            <div id="progressBar" class="progress-bar-fill"></div>
-        </div>
+        <small style="color: #6b7280; display: block; margin-top: 4px;">ادخل نفس الرمز في الآيباد والكمبيوتر لمزامنة البيانات بينهما فوراً.</small>
     </div>
 
-    <!-- المهمات اليومية -->
-    <div class="card">
-        <div class="card-title">📌 المهمات اليومية</div>
-        <div class="tasks-container" id="tasksList"></div>
+    <div class="input-group">
+        <input type="text" id="task-input" placeholder="أضف ملاحظة أو مهمة جديدة...">
+        <button class="btn-add" onclick="addTask()">إضافة</button>
     </div>
 
-    <!-- متابعة المواد -->
-    <div class="card">
-        <div class="card-title">📚 متابعة المواد الدراسية</div>
-        <div class="subjects-grid" id="subjectsList"></div>
-    </div>
-
-    <!-- الأزرار -->
-    <div class="actions">
-        <button onclick="saveAndResetDay()">حفظ اليوم والانتقال للجديد</button>
-        <button class="btn-secondary" onclick="resetToday()">إعادة ضبط اليوم</button>
-    </div>
-
-    <!-- السجل السابق -->
-    <div class="card" style="margin-top: 24px;">
-        <div class="card-title">🕒 سجل الأيام السابقة</div>
-        <div id="historyList">
-            <p style="color: var(--text-muted); font-size: 0.95rem;">لا يوجد سجل سابق بعد.</p>
-        </div>
-    </div>
+    <ul id="task-list"></ul>
 </div>
 
 <script>
-    const defaultTasks = [
-        { id: 1, text: "4 صفحات قرآن", done: false },
-        { id: 2, text: "زيارة آل ياسين", done: false },
-        { id: 3, text: "صلاة الليل (أذا أمكن)", done: false },
-        { id: 4, text: "درس في الرياضيات + حل 20 سؤال عليه", done: false },
-        { id: 5, text: "تقليل استخدام الجوال (سوشل ميديا \\ المانهوا أو مانغا)", done: false }
-    ];
+    const defaultKey = 'my-sync-notes-key';
+    let currentKey = localStorage.getItem('sync_user_key') || defaultKey;
+    document.getElementById('user-key').value = currentKey;
 
-    const defaultSubjects = [
-        { name: "فيزياء", lessonsDone: 0, lessonsTotal: 10, pagesDone: 0, pagesTotal: 76 },
-        { name: "رياضيات", lessonsDone: 0, lessonsTotal: 17, pagesDone: 0, pagesTotal: 83 },
-        { name: "كيمياء", lessonsDone: 0, lessonsTotal: 11, pagesDone: 0, pagesTotal: 76 },
-        { name: "الأحياء", lessonsDone: 0, lessonsTotal: 11, pagesDone: 0, pagesTotal: 78 }
-    ];
+    function saveKey() {
+        const val = document.getElementById('user-key').value.trim();
+        if (val) {
+            localStorage.setItem('sync_user_key', val);
+            currentKey = val;
+            loadTasks();
+            alert('تم حفظ رمز المزامنة وتحديث القائمة!');
+        }
+    }
 
-    let state = JSON.parse(localStorage.getItem('youssef_daily_state')) || {
-        date: new Date().toLocaleDateString('ar-SA'),
-        tasks: defaultTasks,
-        subjects: defaultSubjects,
-        history: []
-    };
+    function getStorageKey() {
+        return 'tasks_' + currentKey;
+    }
 
-    document.getElementById('currentDate').innerText = "التاريخ: " + state.date + " (2026)";
+    function getTasks() {
+        return JSON.parse(localStorage.getItem(getStorageKey()) || '[]');
+    }
 
-    function render() {
-        const tasksContainer = document.getElementById('tasksList');
-        tasksContainer.innerHTML = '';
-        state.tasks.forEach((task, index) => {
-            tasksContainer.innerHTML += `
-                <div class="task-item ${task.done ? 'completed' : ''}">
-                    <label class="task-label">
-                        <input type="checkbox" ${task.done ? 'checked' : ''} onclick="toggleTask(${index})">
-                        <span>${task.text}</span>
-                    </label>
+    function saveTasks(tasks) {
+        localStorage.setItem(getStorageKey(), JSON.stringify(tasks));
+        renderTasks();
+    }
+
+    function addTask() {
+        const input = document.getElementById('task-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const tasks = getTasks();
+        tasks.push({ id: Date.now(), text: text, completed: false });
+        saveTasks(tasks);
+        input.value = '';
+    }
+
+    function toggleTask(id) {
+        const tasks = getTasks().map(t => {
+            if (t.id === id) t.completed = !t.completed;
+            return t;
+        });
+        saveTasks(tasks);
+    }
+
+    function deleteTask(id) {
+        const tasks = getTasks().filter(t => t.id !== id);
+        saveTasks(tasks);
+    }
+
+    function renderTasks() {
+        const list = document.getElementById('task-list');
+        list.innerHTML = '';
+        const tasks = getTasks();
+
+        tasks.forEach(t => {
+            const li = document.createElement('li');
+            if (t.completed) li.classList.add('completed');
+
+            li.innerHTML = `
+                <span onclick="toggleTask(${t.id})" style="cursor:pointer; flex:1;">${escapeHtml(t.text)}</span>
+                <div class="actions">
+                    <button class="btn-delete" onclick="deleteTask(${t.id})">حذف</button>
                 </div>
             `;
+            list.appendChild(li);
         });
+    }
 
-        const subjectsContainer = document.getElementById('subjectsList');
-        subjectsContainer.innerHTML = '';
-        state.subjects.forEach((sub, index) => {
-            subjectsContainer.innerHTML += `
-                <div class="subject-card">
-                    <div class="subject-header">
-                        <span>${sub.name}</span>
-                    </div>
-                    <div class="subject-inputs">
-                        <div class="input-group">
-                            <span>الدروس:</span>
-                            <input type="number" value="${sub.lessonsDone}" min="0" max="${sub.lessonsTotal}" onchange="updateSub(${index}, 'lessonsDone', this.value)">
-                            <span>/ ${sub.lessonsTotal}</span>
-                        </div>
-                        <div class="input-group">
-                            <span>الصفحات:</span>
-                            <input type="number" value="${sub.pagesDone}" min="0" max="${sub.pagesTotal}" onchange="updateSub(${index}, 'pagesDone', this.value)">
-                            <span>/ ${sub.pagesTotal}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
 
-        let totalItems = state.tasks.length + state.subjects.length * 2;
-        let completedItems = state.tasks.filter(t => t.done).length;
-        state.subjects.forEach(sub => {
-            if (sub.lessonsDone >= sub.lessonsTotal) completedItems++;
-            if (sub.pagesDone >= sub.pagesTotal) completedItems++;
-        });
-
-        let percent = Math.round((completedItems / totalItems) * 100);
-        document.getElementById('progressBar').style.width = percent + '%';
-        document.getElementById('progressText').innerText = percent + '%';
-
-        const historyContainer = document.getElementById('historyList');
-        if (state.history.length === 0) {
-            historyContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.95rem;">لا يوجد سجل سابق بعد.</p>';
-        } else {
-            historyContainer.innerHTML = '';
-            state.history.forEach((h, hIdx) => {
-                historyContainer.innerHTML += `
-                    <div class="history-item">
-                        <span>📅 ${h.date} - نسبة الإنجاز: <strong>${h.percent}%</strong></span>
-                        <button onclick="deleteHistory(${hIdx})" style="background:var(--danger); color:white; padding:4px 10px; font-size:0.8rem; border-radius:6px; flex:none;">حذف</button>
-                    </div>
-                `;
-            });
+    // Direct listener for basic cross-tab/local changes
+    window.addEventListener('storage', (e) => {
+        if (e.key === getStorageKey()) {
+            renderTasks();
         }
+    });
 
-        localStorage.setItem('youssef_daily_state', JSON.stringify(state));
-    }
-
-    function toggleTask(index) {
-        state.tasks[index].done = !state.tasks[index].done;
-        render();
-    }
-
-    function updateSub(index, field, val) {
-        state.subjects[index][field] = Number(val);
-        render();
-    }
-
-    function resetToday() {
-        state.tasks.forEach(t => t.done = false);
-        state.subjects.forEach(s => { s.lessonsDone = 0; s.pagesDone = 0; });
-        render();
-    }
-
-    function saveAndResetDay() {
-        let totalItems = state.tasks.length + state.subjects.length * 2;
-        let completedItems = state.tasks.filter(t => t.done).length;
-        state.subjects.forEach(sub => {
-            if (sub.lessonsDone >= sub.lessonsTotal) completedItems++;
-            if (sub.pagesDone >= sub.pagesTotal) completedItems++;
-        });
-        let percent = Math.round((completedItems / totalItems) * 100);
-
-        state.history.unshift({
-            date: state.date,
-            percent: percent,
-            tasks: JSON.parse(JSON.stringify(state.tasks))
-        });
-
-        let unfinished = state.tasks.filter(t => !t.done).map(t => t.text);
-        if(unfinished.length > 0) {
-            localStorage.setItem('youssef_unfinished', JSON.stringify(unfinished));
-        }
-
-        state.date = new Date().toLocaleDateString('ar-SA');
-        resetToday();
-    }
-
-    window.onload = function() {
-        let unfs = JSON.parse(localStorage.getItem('youssef_unfinished'));
-        if(unfs && unfs.length > 0) {
-            document.getElementById('alertBox').style.display = 'block';
-            document.getElementById('alertText').innerText = unfs.join('، ');
-        }
-        render();
-    }
-
-    function carryOverTasks() {
-        let unfs = JSON.parse(localStorage.getItem('youssef_unfinished'));
-        if(unfs) {
-            unfs.forEach(text => {
-                state.tasks.push({ id: Date.now(), text: text + " (مرحل)", done: false });
-            });
-            localStorage.removeItem('youssef_unfinished');
-            document.getElementById('alertBox').style.display = 'none';
-            render();
-        }
-    }
-
-    function deleteHistory(index) {
-        state.history.splice(index, 1);
-        render();
-    }
+    renderTasks();
 </script>
 
 </body>
